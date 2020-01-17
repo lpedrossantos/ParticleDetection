@@ -42,6 +42,7 @@
       const border = window.innerHeight - radius * 2;
       const detectorSize = 100;
       const detectorRadius = 18;
+      const el = document.querySelector("canvas");
       
       const circleArr = [];
       const detectorArr = [];
@@ -54,20 +55,18 @@
       ctx.imageSmoothingQuality = "high";
       
       if (window.innerWidth < 600) {
-        numberParticles = 40;
-        radius = 3;
-        document.querySelector("canvas").addEventListener("touchmove", event => {
-        mouse.x = event.x;
-        mouse.y = event.y;
+        numberParticles = 30;
+        radius = 4;
+        el.addEventListener("touchmove", event => {
+        mouse.x = event.touch[0].x;
+        mouse.y = event.touch[0].y;
         event.preventDefault();
-        console.log(mouse.x, mouse.y);
         });
       } else {
-        document.querySelector("canvas").addEventListener("mousemove", event => {
+        el.addEventListener("mousemove", event => {
         mouse.x = event.x;
         mouse.y = event.y;
         event.preventDefault();
-        console.log(mouse.x, mouse.y);
         });
       };
 
@@ -144,7 +143,7 @@
                 i.y > j.y - detectorSize / 2
               ) {
                 ctx.fillStyle = "rgba(80,173,222,0.3)";
-                ctx.lineWidth = 0.5;
+                ctx.lineWidth = 0.3;
               }
               if (
                 i.x < j.x + detectorSize / 4 &&
@@ -153,7 +152,7 @@
                 i.y > j.y - detectorSize / 4
               ) {
                 ctx.fillStyle = "rgba(80,173,222,0.5)";
-                ctx.lineWidth = 0.7;
+                ctx.lineWidth = 0.5;
               }
               if (
                 i.x < j.x + detectorSize / 8 &&
@@ -162,7 +161,7 @@
                 i.y > j.y - detectorSize / 8
               ) {
                 ctx.fillStyle = "rgba(80,173,222,0.9)";
-                ctx.lineWidth = 1;
+                ctx.lineWidth = 0.7;
               }
             }
           }
