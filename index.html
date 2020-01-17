@@ -36,7 +36,6 @@
       });
       const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d");
-      const radius = 6;
       const border = window.innerHeight - radius * 2;
       const detectorSize = 100;
       const detectorRadius = 18;
@@ -47,13 +46,17 @@
         x: undefined,
         y: undefined
       };
-      let x, y, dx, dy, detector, line, numberParticles;
+      let x, y, dx, dy, detector, line, numberParticles, radius;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       ctx.imageSmoothingQuality = "high";
       numberParticles = 100;
+      radius = 6;
       
-      if(window.innerWidth < 600) numberParticles = 20;
+      if (window.innerWidth < 600) {
+        numberParticles = 40;
+        radius = 3;
+      }
 
       class Circle {
         constructor(x, y, dx, dy, radius) {
