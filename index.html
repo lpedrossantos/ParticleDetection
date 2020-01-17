@@ -34,6 +34,9 @@
         startAnimation = false;
         init();
       });
+      let x, y, dx, dy, detector, line, numberParticles, radius;
+      numberParticles = 100;
+      radius = 6;
       const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d");
       const border = window.innerHeight - radius * 2;
@@ -46,12 +49,9 @@
         x: undefined,
         y: undefined
       };
-      let x, y, dx, dy, detector, line, numberParticles, radius;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       ctx.imageSmoothingQuality = "high";
-      numberParticles = 100;
-      radius = 6;
       
       if (window.innerWidth < 600) {
         numberParticles = 40;
