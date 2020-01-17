@@ -56,7 +56,20 @@
       if (window.innerWidth < 600) {
         numberParticles = 40;
         radius = 3;
-      }
+        document.querySelector("canvas").addEventListener("touchmove", event => {
+        mouse.x = event.x;
+        mouse.y = event.y;
+        event.preventDefault();
+        console.log(mouse.x, mouse.y);
+        });
+      } else {
+        document.querySelector("canvas").addEventListener("mousemove", event => {
+        mouse.x = event.x;
+        mouse.y = event.y;
+        event.preventDefault();
+        console.log(mouse.x, mouse.y);
+        });
+      };
 
       class Circle {
         constructor(x, y, dx, dy, radius) {
@@ -104,12 +117,7 @@
         circle.draw();
       }
 
-      document.querySelector("canvas").addEventListener("mousemove", event => {
-        mouse.x = event.x;
-        mouse.y = event.y;
-        event.preventDefault();
-        console.log(mouse.x, mouse.y);
-      });
+      
       const animation = () => {
         window.requestAnimationFrame(animation);
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
