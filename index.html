@@ -58,8 +58,8 @@
         numberParticles = 30;
         radius = 4;
         el.addEventListener("touchmove", event => {
-        mouse.x = event.touch[0].x;
-        mouse.y = event.touch[0].y;
+         mouse.x = event.pageX;
+         mouse.y = event.pageY;
         event.preventDefault();
         });
       } else {
