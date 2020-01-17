@@ -1,0 +1,179 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Particle detection</title>
+  </head>
+  <body>
+    <h1></h1>
+    <canvas></canvas>
+
+    <style>
+      canvas {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background-color: #021859;
+      }
+      h1 {
+        position: absolute;
+        z-index: 1;
+        color: #f2c029;
+      }
+    </style>
+    <script>
+      function init() {
+        startAnimation = true;
+      }
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        startAnimation = false;
+        init();
+      });
+      const canvas = document.querySelector("canvas");
+      const ctx = canvas.getContext("2d");
+      const radius = 6;
+      const border = window.innerHeight - radius * 2;
+      const detectorSize = 100;
+      const detectorRadius = 18;
+      const numberParticles = 100;
+      const circleArr = [];
+      const detectorArr = [];
+      const mouse = {
+        x: undefined,
+        y: undefined
+      };
+      let x, y, dx, dy, detector, line;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.imageSmoothingQuality = "high";
+
+      class Circle {
+        constructor(x, y, dx, dy, radius) {
+          this.x = x;
+          this.y = y;
+          this.dx = dx;
+          this.dy = dy;
+          this.radius = radius;
+          this.color = "#0424D9";
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, 180);
+          if (this.radius < detectorRadius) {
+            ctx.fillStyle = this.color;
+            ctx.fill();
+          }
+        }
+        detection() {}
+
+        update() {
+          this.draw();
+          if (this.x > window.innerWidth || this.x < 0) {
+            this.dx = -this.dx;
+          }
+
+          if (this.y > window.innerHeight || this.y < 0) {
+            this.dy = -this.dy;
+          }
+
+          this.x += this.dx;
+          this.y += this.dy;
+        }
+      }
+
+      for (let i = 0; i < numberParticles; i++) {
+        x = Math.floor(Math.random() * window.innerWidth);
+        y = Math.floor(Math.random() * window.innerHeight);
+        dx = Math.random() - 0.5;
+        dy = Math.random() - 0.5;
+        detector = new Circle(x, y, dx, dy, detectorRadius);
+        const circle = new Circle(x, y, dx, dy, radius);
+        circleArr.push(circle);
+        detectorArr.push(detector);
+        circle.draw();
+      }
+
+      document.querySelector("canvas").addEventListener("mousemove", event => {
+        mouse.x = event.x;
+        mouse.y = event.y;
+        event.preventDefault();
+        console.log(mouse.x, mouse.y);
+      });
+      const animation = () => {
+        window.requestAnimationFrame(animation);
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (let i = 0; i < circleArr.length; i++) {
+          circleArr[i].update();
+          detectorArr[i].update();
+        }
+        for (let i of circleArr) {
+          for (let j of detectorArr) {
+            if (
+              i.x < j.x + detectorSize &&
+              i.x > j.x - detectorSize &&
+              i.y < j.y + detectorSize &&
+              i.y > j.y - detectorSize
+            ) {
+              ctx.beginPath();
+              ctx.moveTo(j.x, j.y);
+              ctx.lineTo(i.x, i.y);
+              ctx.stroke();
+              if (
+                i.x < j.x + detectorSize / 2 &&
+                i.x > j.x - detectorSize / 2 &&
+                i.y < j.y + detectorSize / 2 &&
+                i.y > j.y - detectorSize / 2
+              ) {
+                ctx.fillStyle = "rgba(80,173,222,0.3)";
+                ctx.lineWidth = 0.5;
+              }
+              if (
+                i.x < j.x + detectorSize / 4 &&
+                i.x > j.x - detectorSize / 4 &&
+                i.y < j.y + detectorSize / 4 &&
+                i.y > j.y - detectorSize / 4
+              ) {
+                ctx.fillStyle = "rgba(80,173,222,0.5)";
+                ctx.lineWidth = 0.7;
+              }
+              if (
+                i.x < j.x + detectorSize / 8 &&
+                i.x > j.x - detectorSize / 8 &&
+                i.y < j.y + detectorSize / 8 &&
+                i.y > j.y - detectorSize / 8
+              ) {
+                ctx.fillStyle = "rgba(80,173,222,0.9)";
+                ctx.lineWidth = 1;
+              }
+            }
+          }
+        }
+
+        for (let i of circleArr) {
+          if (
+            i.x + detectorSize > mouse.x &&
+            i.x - detectorSize < mouse.x &&
+            i.y + detectorSize > mouse.y &&
+            i.y - detectorSize < mouse.y
+          ) {
+            ctx.beginPath();
+            ctx.moveTo(i.x, i.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+            i.color = "rgba(242,192,41,0.9)";
+            //circleArr[i].update();
+          } else {
+            i.color = "#0424D9";
+          }
+        }
+      };
+      init();
+      animation();
+    </script>
+  </body>
+</html>
