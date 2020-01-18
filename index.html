@@ -34,13 +34,13 @@
         startAnimation = false;
         init();
       });
-      let x, y, dx, dy, detector, line, numberParticles, radius;
+      let x, y, dx, dy, detector, line, numberParticles, radius, detectorSize;
       numberParticles = 100;
       radius = 6;
+      detectorSize = 100;
       const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d");
       const border = window.innerHeight - radius * 2;
-      const detectorSize = 100;
       const detectorRadius = 18;
       const el = document.querySelector("canvas");
       
@@ -57,10 +57,15 @@
       if (window.innerWidth < 600) {
         numberParticles = 30;
         radius = 4;
+        detectorSize = 50;
         el.addEventListener("touchmove", e => {
          mouse.x = e.touches[0].clientX;
          mouse.y = e.touches[0].clientY;
          console.log("Event Fired");
+        event.preventDefault();
+          el.addEventListener("touchend", e => {
+         mouse.x = undefined;
+         mouse.y = undefined;
         event.preventDefault();
         });
       } else {
