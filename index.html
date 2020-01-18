@@ -57,7 +57,7 @@
       if (window.innerWidth < 600) {
         numberParticles = 30;
         radius = 4;
-        el.addEventListener("touchmove", event => {
+        el.addEventListener("touchmove", e => {
          mouse.x = event.pageX;
          mouse.y = event.pageY;
          console.log("Event Fired", e.touches[0].clientX,e.touches[0].clientY);
