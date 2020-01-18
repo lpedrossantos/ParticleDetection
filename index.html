@@ -60,7 +60,7 @@
         el.addEventListener("touchmove", event => {
          mouse.x = event.pageX;
          mouse.y = event.pageY;
-         console.log("Event Fired", mouse.x,mouse.y);
+         console.log("Event Fired", e.touches[0].clientX,e.touches[0].clientY);
           console.log(event);
         event.preventDefault();
         });
